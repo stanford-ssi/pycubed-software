@@ -1,7 +1,9 @@
-import busio
+# standard libraries
 import board
+import busio
 import time
 
+# third-party libraries
 import unittest
 import adafruit_tcs34725
 

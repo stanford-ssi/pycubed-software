@@ -1,7 +1,7 @@
 # standard libraries
 import time
 
-# 3rd-party libraries
+# third-party libraries
 import unittest
 
 # pycubed libraries
