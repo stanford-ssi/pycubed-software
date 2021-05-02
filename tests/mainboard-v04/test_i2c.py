@@ -6,6 +6,9 @@ import time
 # third-party libraries
 import unittest
 import adafruit_tcs34725
+import bq25883
+import bmx160
+import adm1176
 
 
 class TestI2C(unittest.TestCase):
@@ -43,3 +46,29 @@ class TestI2C(unittest.TestCase):
 
         print("----------")
         i2c.deinit()
+
+    def test_internal_I2C_devices(self):
+        # initialize internal I2C pins
+        i2c = busio.I2C(board.SCL,board.SDA)
+        # print out addresses of all i2C device addresses
+        i2c.try_lock()
+        scan = i2c.scan()
+        print("I2C scan:")
+        for address in scan:
+            print(hex(address))
+        i2c.unlock()
+
+        # try to initialize usb
+        USB = bq25883.BQ25883(i2c)
+        print("USB INITIALIZED SUCCESSFULLY at ", hex(USB.i2c_addr))
+        # try to initialize power monitor
+        PWR = adm1176.ADM1176(i2c)
+        print("POWER MONITOR SUCCESSFULLY at ", hex(PWR.i2c_addr))
+        # try to initialize IMU
+        IMU = bmx160.BMX160_I2C(i2c)
+        print("IMU SUCCESSFULLY at ", hex(IMU.i2c_addr))
+
+        ## print IMU data
+        # for i in range(50):
+        #     print(IMU.accel, " --- ", IMU.mag, " --- ", IMU.gyro, " --- ", IMU.temperature)
+        #     time.sleep(1)
